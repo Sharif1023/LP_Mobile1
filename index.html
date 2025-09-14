@@ -21,10 +21,10 @@
     padding: 0;
     font-family: 'Poppins', sans-serif;
     height: 100vh;
-    overflow: hidden;
-    background: var(--secondary-color);
+    overflow-x: hidden;
   }
 
+  /* --- Desktop-First Styles --- */
   .container {
     display: flex;
     height: 100%;
@@ -34,7 +34,6 @@
     background: linear-gradient(135deg, var(--gradient-color-1) 0%, var(--gradient-color-2) 100%);
   }
 
-  /* Left side content */
   .left {
     width: 40%;
     padding: 80px 100px;
@@ -44,7 +43,6 @@
     z-index: 2;
     position: relative;
     color: var(--primary-color);
-    transition: transform 1.8s cubic-bezier(0.25, 1, 0.5, 1);
   }
 
   .left h1 {
@@ -90,7 +88,7 @@
   /* Right side sliding page */
   .right-card {
     position: absolute;
-    right: -100%;
+    right: 0;
     top: 0;
     width: 60%;
     height: 100%;
@@ -101,18 +99,19 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: transform 2s cubic-bezier(0.68, -0.55, 0.27, 1.55), right 2s cubic-bezier(0.68, -0.55, 0.27, 1.55);
     z-index: 1;
-    transform: translateX(100%) rotateY(-25deg);
     overflow: hidden;
+    transform: translateX(100%) rotateY(-25deg);
+    opacity: 0;
   }
 
-  .right-card.show {
-    right: 0;
+  .right-card.animate-in {
+    transition: transform 1.5s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 1s ease 0.5s;
     transform: translateX(0) rotateY(0deg);
+    opacity: 1;
   }
 
-  /* Animated shapes (from previous option, keeping for consistency) */
+  /* Animated shapes */
   @keyframes float {
     0% { transform: translateY(0) rotate(0deg); opacity: 0.8; }
     50% { transform: translateY(-20px) rotate(10deg); opacity: 1; }
@@ -156,76 +155,41 @@
 
   /* iPhone 7 Mockup */
   .iphone {
-    width: 320px; /* iPhone 7 width */
-    height: 640px; /* iPhone 7 height */
+    width: 320px;
+    height: 640px;
     border-radius: 40px;
-    background: #f0f0f0; /* Changed to white/light gray */
+    background: #f0f0f0;
     position: relative;
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2); /* Lighter shadow for white */
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    border: 6px solid #ccc; /* Lighter border */
+    border: 6px solid #ccc;
     transform: rotateY(-10deg) rotateX(5deg) scale(0.9);
     transition: transform 1.5s ease;
     z-index: 1;
     padding: 0;
   }
   
-  .right-card.show .iphone {
+  .right-card.animate-in .iphone {
     transform: rotateY(0) rotateX(0) scale(1);
   }
 
-  /* Top Bezel for iPhone 7 */
-  .iphone .top-bezel-7 {
+  .iphone .top-bezel-7, .iphone .bottom-bezel-7 {
     width: 100%;
     height: 70px;
-    background: #f0f0f0; /* Changed to white/light gray */
+    background: #f0f0f0;
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
-    padding: 0 20px;
     box-sizing: border-box;
   }
 
-  .iphone .earpiece {
-    width: 50px;
-    height: 8px;
-    background: #333; /* Dark for contrast */
-    border-radius: 4px;
-    position: absolute;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-
-  .iphone .front-camera {
-    width: 10px;
-    height: 10px;
-    background: #333; /* Dark for contrast */
-    border-radius: 50%;
-    position: absolute;
-    top: 20px;
-    left: calc(50% - 70px);
-  }
-
-  .iphone .sensor {
-    width: 6px;
-    height: 6px;
-    background: #333; /* Dark for contrast */
-    border-radius: 50%;
-    position: absolute;
-    top: 22px;
-    right: calc(50% - 70px);
-  }
-
-  /* Screen area */
   .iphone-screen {
     flex: 1;
     background: #fff;
     overflow: hidden;
-    margin: 0;
     height: calc(100% - 140px);
   }
   
@@ -236,82 +200,38 @@
     display: block;
   }
 
-  /* Bottom Bezel for iPhone 7 */
-  .iphone .bottom-bezel-7 {
-    width: 100%;
-    height: 70px;
-    background: #f0f0f0; /* Changed to white/light gray */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-  }
+  .iphone .earpiece { width: 50px; height: 8px; background: #333; border-radius: 4px; position: absolute; top: 20px; left: 50%; transform: translateX(-50%); }
+  .iphone .front-camera { width: 10px; height: 10px; background: #333; border-radius: 50%; position: absolute; top: 20px; left: calc(50% - 70px); }
+  .iphone .sensor { width: 6px; height: 6px; background: #333; border-radius: 50%; position: absolute; top: 22px; right: calc(50% - 70px); }
+  .iphone .home-button-7 { width: 45px; height: 45px; background: #333; border-radius: 50%; box-shadow: inset 0 2px 4px rgba(0,0,0,0.3); border: 1px solid #444; }
 
-  .iphone .home-button-7 {
-    width: 45px;
-    height: 45px;
-    background: #333; /* Dark for contrast */
-    border-radius: 50%;
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
-    border: 1px solid #444;
-  }
-
-  /* Side buttons */
-  .button {
-    position: absolute;
-    background: #555; /* Slightly lighter dark gray for buttons */
-    border-radius: 4px;
-    box-shadow: inset 0 0 5px rgba(0,0,0,0.3);
-  }
-
-  /* Volume buttons left side */
-  .volume-up {
-    width: 5px;
-    height: 40px;
-    left: -10px;
-    top: 130px;
-  }
-  .volume-down {
-    width: 5px;
-    height: 40px;
-    left: -10px;
-    top: 190px;
-  }
-
-  /* Lock button right side */
-  .lock {
-    width: 5px;
-    height: 60px;
-    right: -10px;
-    top: 160px;
-  }
+  .button { position: absolute; background: #555; border-radius: 4px; box-shadow: inset 0 0 5px rgba(0,0,0,0.3); }
+  .volume-up { width: 5px; height: 40px; left: -10px; top: 130px; }
+  .volume-down { width: 5px; height: 40px; left: -10px; top: 190px; }
+  .lock { width: 5px; height: 60px; right: -10px; top: 160px; }
   
-  /* Media Queries for Responsiveness */
-  @media (max-width: 1024px) {
-    .left {
-      width: 50%;
-      padding: 50px;
-    }
-    .right-card {
-      width: 50%;
-    }
-  }
-
+  /* --- Mobile Responsive Styles --- */
   @media (max-width: 768px) {
+    body, html {
+      height: auto; /* Allow content to dictate height */
+      overflow-y: auto; /* Enable vertical scroll */
+      background: linear-gradient(135deg, #F0FFF0, #E6E6FA);
+    }
     .container {
       flex-direction: column;
-      justify-content: flex-start;
-      align-items: center;
+      justify-content: flex-start; /* Align content from the top */
+      align-items: center; /* Center items horizontally */
+      height: auto; /* Allow content to dictate height */
+      background: linear-gradient(135deg, #F0FFF0, #E6E6FA);
+      overflow-x: hidden;
       padding-top: 50px;
-      overflow-y: auto;
     }
     
     .left {
       width: 100%;
       text-align: center;
-      padding: 20px;
-      padding-top: 50px;
-      transform: none;
+      padding: 0 20px 20px;
+      margin: 0;
     }
     
     .left h1 {
@@ -320,30 +240,52 @@
     }
     
     .left p {
-      max-width: 80%;
+      max-width: 100%;
       margin: 0 auto;
+      font-size: 1rem;
     }
     
     .right-card {
       position: relative;
-      right: auto;
-      top: auto;
       width: 90%;
-      height: 600px;
-      border-radius: 30px;
-      transform: none !important;
+      height: 650px; /* Increased height to fit the full phone */
       margin-top: 40px;
+      margin-bottom: 50px; /* Added margin for bottom spacing */
+      border-radius: 30px;
+      transform: none;
+      opacity: 1;
+      background: rgba(255, 255, 255, 0.4);
+      backdrop-filter: blur(20px);
       box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
       transition: none;
     }
-    
-    .right-card.show {
-      right: auto;
+
+    .right-card.animate-in {
       transform: none;
+      opacity: 1;
     }
     
     .iphone {
-      transform: none !important;
+      width: 320px; /* Reset to original size to show the full mockup */
+      height: 640px; /* Reset to original size */
+      transform: none;
+      box-shadow: none;
+    }
+
+    /* We don't need to adjust these sizes if the phone is at its original size */
+    .iphone .top-bezel-7, .iphone .bottom-bezel-7 {
+        height: 70px;
+    }
+    .iphone-screen {
+        height: calc(100% - 140px);
+    }
+
+    .shape-1 { width: 80px; height: 80px; top: 5%; left: 5%; }
+    .shape-2 { width: 60px; height: 60px; bottom: 15%; right: 10%; }
+    .shape-3 { width: 50px; height: 50px; top: 40%; left: 15%; }
+
+    @media (max-width: 480px) {
+        .shape { display: none; }
     }
   }
 </style>
@@ -386,14 +328,15 @@
 </div>
 
 <script>
-  window.addEventListener('load', () => {
+  document.addEventListener('DOMContentLoaded', () => {
     const card = document.getElementById('card');
-    const left = document.getElementById('leftText');
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
 
-    setTimeout(() => {
-      card.classList.add('show');
-      left.classList.add('animate');
-    }, 200);
+    if (!isMobile) {
+      setTimeout(() => {
+        card.classList.add('animate-in');
+      }, 500);
+    }
   });
 </script>
 
